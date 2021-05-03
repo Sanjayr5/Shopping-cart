@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap';
 import { login, register } from '../userActions';
+import validator from 'validator';
 
 function LoginPage(props){
     const [name, setName ] = useState('');
@@ -33,7 +34,7 @@ function LoginPage(props){
     const clickedRegister = (e) => {
         e.preventDefault()
         if(name.length >= 3){
-            if(email === /^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/){
+            if(validator.isEmail(email)){
                 if(password === confirmPassword ){
                     dispatch(register(name, email, password))
                 }else{
