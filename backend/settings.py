@@ -42,9 +42,18 @@ INSTALLED_APPS = [
     'App.apps.AppConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
     'corsheaders',
     'storages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+SITE_ID = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -104,7 +113,10 @@ DATABASES = {
     }
 }
 
-
+# AUTHENTICATION_BACKENDS = [
+#     'social_core.backends.google.GoogleOAuth2',
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 

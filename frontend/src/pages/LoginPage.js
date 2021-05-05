@@ -2,22 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap';
-import { login, register } from '../userActions';
+import { login, register, google_login } from '../userActions';
 import validator from 'validator';
+import GoogleLogin from 'react-google-login';
 
 function LoginPage(props){
     const [name, setName ] = useState('');
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [ isLoginView, setIsLoginView ] = useState(true);
-    const [alert, setAlert] = useState('')
+    const [alert, setAlert] = useState('');
     const redirect = props.location.search ? props.location.search.split('=')[1] : '/'
     const dispatch = useDispatch()
     const userLogin = useSelector(state => state.userLogin)
     const { error } = userLogin
     const userRegister = useSelector(state => state.userRegister)
-    const { userInfo } = userLogin ? userLogin : userRegister
+    var { userInfo } = userLogin ? userLogin : userRegister
+    const onFailure = (response) => {
+        console.log("fails")
+        console.log(response)
+    }
+    const onSuccessGoogle = (response) => {
+        console.log(response.profileObj);
+        dispatch(google_login(response.profileObj))
+        window.location.reload()
+    }
 
     useEffect(() => {
         if (userInfo) {
@@ -27,8 +37,7 @@ function LoginPage(props){
 
     const clickedLogin = (e) => {
         e.preventDefault()
-        dispatch(login(email, password))
-        
+        dispatch(login(email, password))   
     }
 
     const clickedRegister = (e) => {
@@ -102,6 +111,13 @@ function LoginPage(props){
                         <Button variant="primary" onClick={clickedLogin} disabled={loginisDisabled}>Sign In</Button> : 
                         <Button variant="primary" onClick={clickedRegister} disabled={registerisDisabled}>Register</Button>
                     }
+                        <br /><br />
+                        <GoogleLogin
+                                clientId="667892045746-npebuonb653hp39faq259mmd7sk0jklr.apps.googleusercontent.com"
+                                buttonText="Continue with Google"
+                                onSuccess={onSuccessGoogle}
+                                onFailure={onFailure}
+                            />
                  </Form>
                 
             <Row className='py-3'>

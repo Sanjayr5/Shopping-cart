@@ -56,3 +56,18 @@ export const register = (name, email, password) => async (dispatch) => {
         })
     }
 }
+
+export const google_login = (data) => async (dispatch) => {
+    try {
+        dispatch({
+            type: 'google_login_successful',
+            payload: data
+        })
+        localStorage.setItem('userInfo', JSON.stringify(data))
+    } catch (error) {
+        dispatch({
+            type: 'google_login_failed',
+            payload: 'Login Failed. Please try again.'
+        })
+    }
+}

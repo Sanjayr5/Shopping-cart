@@ -14,11 +14,10 @@ export const addOrder = (order) => async (dispatch, getState) => {
             `/addorders/`,
             order,
             { headers: {
-                    'Content-type': 'application/json',
-                    Authorization: `Bearer ${userInfo.token}`
+                    'Content-type': 'application/json'
                 }}
         )
-
+        console.log({ userInfo })
         dispatch({
             type: 'order_success',
             payload: data

@@ -17,13 +17,13 @@ class Item(models.Model):
         return self.name
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    email = models.CharField(max_length=200, null=True, blank=True)
     totalPrice = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return str(self._id) + "_" + str(self.createdAt)
+        return str(self.email) + "_" + str(self.createdAt)
 
 class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)

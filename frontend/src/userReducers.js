@@ -29,3 +29,17 @@ export const userregisterReducer = (state = {}, action) => {
             return state
     }
 }
+
+export const googleLoginReducer = (state = {}, action) => {
+    switch (action.type) {
+
+        case 'google_login_successful':
+            return { loading: false, userInfo: action.payload }
+
+        case 'google_login_failed':
+            return { loading: false, error: action.payload }
+
+        default:
+            return state
+    }
+}

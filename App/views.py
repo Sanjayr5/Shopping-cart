@@ -8,8 +8,14 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from rest_auth.registration.views import SocialLoginView
 
 # Create your views here.
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    print(adapter_class)
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -34,7 +40,6 @@ def registerUser(request):
             email=data['email'],
             password=make_password(data['password'])
         )
-
         serializer = UserSerializer(user, many=False)
         return Response(serializer.data)
     except:
@@ -61,15 +66,12 @@ def getItem(request, pk):
 
 @api_view(['POST'])
 def addOrderItems(request):
-    user = request.user
     data = request.data
-    print(data['totalPrice'])
     order = Order.objects.create(
-        user=user,
+        email=data['email'],
         totalPrice=data['totalPrice']
     )
     orderItems = data['orderItems']
-    print(orderItems)
     for i in orderItems:
         item = Item.objects.get(_id=i['item'])
         item = OrderItem.objects.create(

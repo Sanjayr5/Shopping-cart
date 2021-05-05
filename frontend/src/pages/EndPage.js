@@ -6,13 +6,15 @@ import { removeallitemsfromCart } from '../cartAction';
 import { addOrder } from '../orderAction';
 
 function EndPage(props) {
-    const history = useHistory();
+    const history = useHistory()
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart)
+    const userLogin = useSelector(state => state.userLogin)
     cart.totalPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
-
+    const { userInfo } = userLogin
     useEffect(() => {
         dispatch(addOrder({
+            email: userInfo.email,
             orderItems: cart.cartItems,
             totalPrice: cart.totalPrice,
         }))

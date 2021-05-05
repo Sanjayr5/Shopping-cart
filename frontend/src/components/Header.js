@@ -1,14 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {Navbar, Nav, Button, SplitButton, Dropdown} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 function Header(props) {
     const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
+    const { userInfo } = userLogin;
+    const history = useHistory();
     const logoutHandler = () => {
         window.localStorage.clear()
+        history.push("/");
         window.location.reload()
     }
     return (

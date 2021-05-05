@@ -33,8 +33,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     orderItems = serializers.SerializerMethodField(read_only=True)
-    user = serializers.SerializerMethodField(read_only=True)
-
     class Meta:
         model = Order
         fields = '__all__'
@@ -42,9 +40,4 @@ class OrderSerializer(serializers.ModelSerializer):
     def get_orderItems(self, obj):
         items = obj.orderitem_set.all()
         serializer = OrderItemSerializer(items, many=True)
-        return serializer.data
-
-    def get_user(self, obj):
-        user = obj.user
-        serializer = UserSerializer(user, many=False)
         return serializer.data
